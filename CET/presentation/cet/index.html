@@ -1,0 +1,808 @@
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><style type='text/css'>
+body {
+  font-family: 'Helvetica';
+  letter-spacing:0px;
+  background:#fff;
+  background-size:100%;
+  color:#000;
+  margin:0;
+  padding:0;
+  font-weight:normal;
+  font-size: 16px;
+}
+
+h1, h2, h3, p {
+  
+}
+
+em, a {
+  font-style:normal;
+  color:#8dbd0c;
+}
+
+a {
+  /*background: #34d0e7;*/
+  color:#34d0e7;
+  text-decoration:none;
+}
+
+/*img {
+  width:100%;
+}*/
+
+img.small {
+  width: 300px;
+}
+
+img.large {
+  width: 600px;
+}
+ 
+div {
+  cursor:pointer;
+  cursor:hand;
+  position:absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+h1,h2,h3,h4,h5 {
+  font-weight: normal
+}
+
+span {
+  display: block;
+  width: auto;
+}
+
+.title h1 {
+  margin: 30px 0 0 0;
+}
+
+.content {
+  padding-top: 30px;
+  /*vertical-align: center;*/
+}
+
+.content p {
+  width: 700px;
+  margin: 10px auto;
+  text-align: left;
+}
+
+.content ol , .content li {
+  text-align: left;
+  width: 600px;
+  margin: 10px auto;
+}
+
+.slide {
+  display: none;
+}
+
+#loader {
+  margin-top: 50px;
+}
+
+</style>
+
+<script src="d3.min.js"></script>
+<script type='text/javascript'>
+window.onload = function() {
+    document.getElementById('loader').style.display = 'none';
+
+    var s = document.getElementsByClassName('slide'), cur = 0;
+    var color = d3.scale.category20();
+    var color2 = d3.scale.ordinal()
+      .range([
+        "#ECE765",
+        "#48B8C2",
+        "#CF915F"
+      ])    
+  if (!s) return;
+    function go(n) {
+      //fill in the tech tags
+      var div = d3.select(s[n])
+      div.selectAll("tech").each(function(d,i) {
+        d3.select(this)
+        .style("color", color(this.dataset.name))
+        .style("float", "right")
+        .style("padding", "20px")
+        .text(this.dataset.name)
+      })
+      div.selectAll("part").each(function(d,i) {
+        d3.select(this)
+        .style("color", color2(this.dataset.name))
+        .text(this.dataset.name)
+      })
+
+      div.selectAll("a").attr("target", "_blank");
+
+      //do the BIG stuff
+      cur = n;
+      var i = 1e3, e = s[n];
+      for (var k = 0; k < s.length; k++) s[k].style.display = 'none';
+      e.style.display = 'inline';
+      // e.style.fontSize = 14 + 'px';
+      
+      if (e.firstChild.nodeName === 'IMG') {
+          document.body.style.backgroundImage = 'url(' + e.firstChild.src + ')';
+          e.firstChild.style.display = 'none';
+      } else {
+          document.body.style.backgroundImage = '';
+          document.body.style.backgroundColor = e.style.backgroundColor;
+      }
+      // while (
+      //     e.offsetWidth > window.innerWidth ||
+      //     e.offsetHeight > window.innerHeight) {
+      //     e.style.fontSize = (i -= 10) + 'px';
+      //     if (i < 0) break;
+
+      // }
+      e.style.marginTop = ((window.innerHeight - e.offsetHeight) / 2) + 'px';
+      if (window.location.hash !== n) window.location.hash = n;
+      document.title = e.textContent || e.innerText; 
+    }
+    document.onclick = function() {
+        go(++cur % (s.length));
+    };
+    document.onkeydown = function(e) {
+        (e.which === 39) && go(Math.min(s.length - 1, ++cur));
+        (e.which === 37) && go(Math.max(0, --cur));
+    };
+    function parse_hash() {
+        return Math.max(Math.min(
+            s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) cur = parse_hash() || cur;
+    window.onhashchange = function() {
+        var c = parse_hash();
+        if (c !== cur) go(c);
+    };
+
+    go(cur);
+};
+</script></head><body>
+
+<div id="loader">Loading...</div>
+
+<div class="slide">
+  <span class="title">
+    <h1>CET Agata Grzybek</h1>
+    <h4>November 2013</h4>
+  </span>
+  <span class="content">
+    <h3>Agenda</h3>
+    <ol>
+      <li>Outputs from UC Berkeley
+        <ul>
+          <li>Part 1 - Connected corridors</li>
+          <li>Part 2 - Connected cars</li>
+          <li>Part 3 - Decision Support System</li>
+          <li>Other activities</li>
+          <li>Lessons learned</li>
+        </ul>
+      </li>
+      <li>Status of the Ph.D. project
+        <ul>
+          <li>Thesis premises</li>
+          <li>Thesis outline</li>
+          <li>Current work</li>
+          <li>Gantt chart</li>
+        </ul>
+      </li>
+      <li>Plan for the third year</li>
+    </ul>
+  </span>
+</div>
+
+<!-- <div class="slide">
+<span class="title">
+    <h2>Research at UC Berkeley - timely overview</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <iframe width="100%" height="900px" src="https://docs.google.com/spreadsheet/pub?key=0Ati1E4SaygM-dGY0dlpla3UyTUdhLUFXdWdRQlgweVE&gid=1"></iframe>
+  </span>
+</div> -->
+
+<div class="slide">
+  <span class="title">
+    <h2>Part 1. Connected corridors</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <h3></h3>
+    <ol>
+      <li>PATH research center, Berkeley, CA <a href="http://www.path.berkeley.edu/">http://www.path.berkeley.edu/</a></li>
+      <li>Integrated Corridors Management (ICM) Project – traffic optimisation in a corridor (a freeway and parallel arterial routes) <a href="http://www.its.dot.gov/icms/">http://www.its.dot.gov/icms/</a>. The project aims in a lcalised traffic management of the most congested regions in California.</li>
+      <li>Learned about the applied research on:<!-- Problem - how to distinguish whether the traffic is poorly managed or the capacity is too hight. -->
+        <ul>
+          <li>Highway modelling</li>
+          <li>Highway control</li>
+          <li>Boundary conditions modelling</li>
+          <li>Arterial modelling </li>
+          <li>Arterial control</li>
+          <li>Traffic prediction</li>
+          <li>Traveller response</li>
+        </ul>
+      </li>
+      <li>Worked on:</li>
+        <ul>
+          <li>Freeway Traffic Estimation System - using a cell transmission model (CTM) for simulating the flow
+  of vehicles on a freeway, and an ensemble Kalman filter (EnKF) to assimilate measurements GPS probes into the estimation model</li>
+        </ul>
+      </li>
+    </ol>
+  </span>
+  <iframe width="80%" height="900px" src="https://docs.google.com/spreadsheet/pub?key=0Ati1E4SaygM-dGY0dlpla3UyTUdhLUFXdWdRQlgweVE&gid=1"></iframe>
+</div>
+
+<div class="slide">
+   <span class="title">
+    <h2>Part 1. Calibration of Freeway Traffic Estimation System</h2>
+  </span>
+  <span class="content">
+  <img src="imgs/calibration.png"></img>
+  </span>
+</div>
+
+<div class="slide">
+ <span class="title">
+    <h2>Part 1. PATH</h2>
+  </span>
+  <span class="content">
+  <h4>Project demonstration for client - Caltrans</h4>
+  <img class="large" src="imgs/path.jpg"></img>
+</span>
+</div>
+
+<div class="slide">
+  <span class="title">
+    <h2>Part 2. Connected cars and self-driving cars</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <ul>
+      <li>Richmond field station (RFS), Richmond, CA <a href="http://rfs.berkeley.edu/">http://rfs.berkeley.edu/</a></li>
+      <li>Connected Car (CC) Project - real-world experiments on connected vehicles with DSRC on board (OBU) and roadside units (RSU) </li>
+      <li>Learned about on-going research and projects:
+      <ul>
+        <li>Cooperative Adaptive Cruise Control (CACC) <a href="http://www.path.berkeley.edu/PATH/Publications/PDF/PRR/2010/PRR-2010-39.pdf">more info</a></li>
+        <li>Multi-Modal Intelligent Traffic Signal Systems (MMITSS) <a href="http://cts.virginia.edu/PFS_MMITSS02_Task2%20PFP_CONOPS_Final.pdf">more info</a></li>
+        <li>Real-Time, Freeway End-of-Queue Alerting System</li>
+        <li>Animal Warning System</li>
+      </ul>
+      </li>
+      <li>California PATH director Tom West, Program Leaders: Ching-Yao Chan, Steven Shladover, Headquarters Researchers: Somak Datta Gupta, Christopher Nowakowski, Ashkan Sharafsaleh</li>
+    </ul>
+    <img class="small" src="imgs/cc4.jpg"></img>
+  </span>
+  <iframe width="80%" height="900px" src="https://docs.google.com/spreadsheet/pub?key=0Ati1E4SaygM-dGY0dlpla3UyTUdhLUFXdWdRQlgweVE&gid=1"></iframe>
+</div>
+
+<div class="slide">
+  <span class="title">
+    <h2>Part 2. Richmond Field Station</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <img class="small" src="imgs/cc1.jpg"></img>
+    <img class="small" src="imgs/cc2.jpg"></img>
+    <img class="small" src="imgs/cc3.jpg"></img>
+  </span>
+</div>
+
+<div class="slide">
+ <span class="title">
+    <h2>Part 2. CVRIA workshop (San Jose, CA, US, Mai, 2013)</h2>
+  </span>
+  <span class="content">
+    <p>Workshop on Connected Vehicle Reference Implementation Architecture program (CVRIA) organized by the Intelligent Transportation Systems Joint Programs Office (ITS JPO). Multiple vendors and implementers of connected vehicle environment (CVE) commented on standards for new technologies and applications</p>
+    <img class="large" src="imgs/cvria.jpg"></img>
+  </span>
+</div>
+
+
+<div class="slide">
+  <span class="title">
+    <h2>Part 3. Decision Support System</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <h2>Traffic information and management system for California</h2>
+    <ol>
+      <li>Monitoring of real-time traffic condition</li>
+      <li>Estimation and prediction of traffic behavior</li>
+      <li>Suggesting response strategies</li>
+      <li>Evaluation of the response strategies with simulations</li>
+      <li>Selection of the best response</li>
+      <li>Input:
+      <ul>
+        <li>Traffic events (accident, road closure)</li>
+        <li>Weather conditions (rain expected)</li>
+        <li>Social events (games, holidays)</li>
+      </ul>
+      </li>
+      <li>Output:
+      <ul>
+        <li>Comparison of performance measures for different control strategies</li>
+        <li>Selection of the best control strategy</li>
+      </ul>
+      </li>
+    </ol>
+  </span>
+  <iframe width="80%" height="900px" src="https://docs.google.com/spreadsheet/pub?key=0Ati1E4SaygM-dGY0dlpla3UyTUdhLUFXdWdRQlgweVE&gid=1"></iframe>
+</div>
+
+<!-- <div>
+  <span class="title">
+    <h2>Decision Support System</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <img class="large" src="imgs/DSS-functional view.png"></img>
+  </span>
+</div>
+</div> -->
+
+<div class="slide">
+  <span class="title">
+    <h2>Part 3. Decision Support System</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <img class="large" src="imgs/DSS-workflow.png"></img>
+  </span>
+</div>
+
+<!-- <div class="slide">
+<span class="title">
+    <h2>Videre</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+</span>
+</div> -->
+
+<div class="slide">
+<span class="title">
+    <h2>Other activities</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <p>Graphlab workhop, San Francisco, July 1st, 2013, 2013</p>
+    <img class="large" src="imgs/graphlab.jpg"></img>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Other activities</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <p>Connected Cars Aps (Uber, Ford, Telefonica) San Francisco, October 2 2013</p>
+    <img class="large" src="imgs/apps_for_cc.jpg"></img>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Other activities</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <p>GraphConnect conference, October 3-4, 2013 , 2013</p>
+    <img class="large" src="imgs/graph_connect.jpg"></img>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Other activities</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <p>Transportation Conference, UC Berkeley November 16, 2013</p>
+    <img class="large" src="imgs/transportationCamp.jpg"></img>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Other activities</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <p>Transportation Conference, UC Berkeley November 16, 2013</p>
+    <img class="large" src="imgs/transportationCamp2.jpg"></img>
+    <br/>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Other activities</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <p>Part of a student group at UC Berkeley: VUD Lab</p>
+    <iframe width="80%" height="900px" src="http://vudlab.com/#/"></iframe>
+    <br/>
+  </span>
+</div>
+
+<div class="slide">
+  <span class="title">
+    <h1>Lessons learned</h1>
+  </span>
+  <span class="content">
+    <ol>
+      <li>The big picture of the transportation:
+        <ul>
+          <li>
+          Traffic information systems - online systems that gather data from different sources and show real-time traffic. 
+            <ul>
+              <li>Previous systems using historical data were good for planning. </li>
+              <li>Today's systems aim in short time prediction about what will happen in half an hour. They only rely on real-time data and learn typical traffic patterns so and can't response to unpredicted traffic situations.</li>
+              <li>Future systems aim in using real-time data to control people - manage the demand: ride sharing, routing, prices. Currently demand management is done through economic means. </li>
+            </ul>
+          </li>
+          <li>Connected and self-driving cars.
+            <ul>
+              <li>Starting of autonomous cars at PATH (Shladover)</li>
+              <li>Dharma Initiative</li>
+              <li>Google self-driven cars (2017)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Practical knowledge about:
+        <ul>
+          <li>The structure of US universities and methodology in research.</li>
+          <li>Current Traffic Information and Management Systems in California and plans for the future development</li>
+          <li>Research trends in transportation.</li>
+        </ul>
+      </li>
+      <li>Conclusion:
+        <ul>
+          <li>There is a paradigm shift in transportation systems: from centralised to distributed (driver-centred).</li>
+        </ul>
+      </li>
+      <li>Ph.D. context:
+        <ul>
+          <li>Vehicular network can implement and improve distributed traffic information and management systems.</li>
+        </ul>
+      </li>
+    </ol>
+    <br/>
+    <br/>
+    <br/>
+</span>
+</div>
+
+<div class="slide">
+  <span class="title">
+    <h2>Ph.D. thesis</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+  <h3>Title: "Community-based vehicular network for traffic information systems"</h3>
+  <h3>Premises:</h3>
+    <ol>
+      <li>Vehicular networks can be used effectively in traffic information and management systems.
+        <ul>
+          <li>VANET-based traffic inormation systems efficiently distribute traffic data.</li>
+          <li>Problem solved: Estimation of traffic condition in urban areas (currently is hard due to lack of traffic data).</li>
+          <li>VANETs enable control over individual vehicles (e.g. routing).</li>
+          <li>Problem solved: Lack of control of drivers behavior.</li>
+          
+        </ul>
+      </li>
+      <li>Distributed community detection enables better communication in the vehicular network.
+        <ul>
+          <li>Dynamic formation of communities groups vehicles who travel together and share communication for a longer time.</li>
+          <!-- <li>Problem: Dynamic mobility of vehicles causes many short-time interractions.</li> -->
+          <li>Problems solved:
+            <ul>
+              <li>Control of communities for demand management (routing, ride-sharing, fleet management).</li>
+              <li>Information from communities for traffic control (density estimation).</li>
+              <li>Communities can be used for analysis of patterns in traffic demand.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </span>
+</div>
+<!-- 
+<div class="slide">
+  <span class="title">
+    <h2>Ph.D. thesis</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+  <h3>Title: "Community-based vehicular network for traffic information systems"</h3>
+  <h3>Premises:</h3>
+    <ol>
+      <li>Vehicular networks can be effectively used in traffic information and management systems.
+        <ul>
+          <li>Problem 1: Estimation of traffic condition in urban areas is hard due to lack of traffic data.</li>
+          <li>VANET-based traffic inormation systems efficiently distribute traffic data.</li>
+          <li>Problem 2: Lack of control of drivers behavior.</li>
+          <li>Solution: Individual control of each vehicle (routing).</li>
+        </ul>
+      </li>
+      <li>Distributed community detection enables better communication in the vehicular network.
+        <ul>
+          <li>Problem: Dynamic mobility of vehicles causes many short-time interractions.</li>
+          <li>Solution: Formation of communities groups vehicles who share communication for a longer time.</li>
+          <li>Use of communities in traffic:
+            <ul>
+              <li>Control of communities for demand management (routing, ride-sharing, fleet management).</li>
+              <li>Information from communities for traffic control (density estimation).</li>
+              <li>Communities can be used for analysis of patterns in traffic demand.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </span>
+</div>
+ -->
+<!-- <div>
+  <span class="title">
+    <h2>Context in the PhD project</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+  <ol>
+    <li>Knowledge from transportation domain
+      <ul>
+        <li>Extended knowledge about traffic modeling, control and management.</li>
+        <li>Example of the practical traffic management systems.</li>
+        <li>Current trends in transportation.</li>
+        <li>Future directions of research in transportation.</li>
+      </ul>
+    </li>
+    <li>Identification of research problems:
+      <ul>
+        <li>Routing in traffic - application of VANETs:
+          <ul>
+            <li>Current solution on Highways: PEMS data to monitor traffic conditions. In case of congestion, reroute to arterials with VMS</li>
+            <li>Problem 1: Lack of control of drivers response.</li>
+            <li>Current solution on arterials: Estimation and control of split ratio at junctions.</li>
+            <li>Problem 2: Hard to estimate due to lack of traffic data</li>
+            <li>Conclusion: VANET-based traffic inormation can solve these problems</li>
+          </ul>
+        </li>
+        <li>Application of communities in traffic:
+          <ul>
+            <li>Problem 1. Detection of dynamic communities for analysis of patterns in traffic demand.</li>
+            <li>Problem 2. Control of communities for demand management (routing, ride-sharing, fleet management).</li>
+            <li>Problem 3: Information from communities for traffic control (density estimation).</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  </span>
+</div> -->
+
+<div class="slide">
+  <span class="title">
+    <h2>Outline of the thesis</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+  <ul>
+    <li>Chapter 1. Introduction
+    <ul>
+      <li>Motivation and context, Contributions, Thesis outline</li></ul>
+    </li>
+    <li>Chapter 2. Vehicular ad hoc networks
+      <ul>
+        <li>Introduction</li>
+        <li>Definitions and specifications</li>
+        <li>Simulations of vehicular networks</li>
+        <li>Vehicular traces</li>
+      </ul>
+    </li>
+    <li>Chapter 3. Traffic Information Systems and Management
+      <ul>
+        <li>Introduction</li>
+        <li>Architecture (centralised,distributed)</li>
+        <li>Examples of Information Systems (Luxembourg, California)</li>
+        <li>Traffic management (Traffic congestion, Traffic demand, Routing)</li>
+        <li>Potential of vehicular networks (in information collection and traffic management)</li>
+      </ul>
+    </li>
+    <li>Chapter 4. Realistic simulation platform for VANET-based TIS
+      <ul>
+        <li>Introduction</li>
+        <li>Existing platforms</li>
+        <li>Generation of realistic vehicular traces (Vehilux, Gawron, Evaluation)</li>
+        <li>Architecture (NS3, SUMO, Traci, VANET application)</li>
+      </ul>
+    </li>
+    <li>Chapter 5. TrafficEQ - VANET-based TIS
+      <ul>
+        <li>Introduction</li>
+        <li>Problem definition</li>
+        <li>System overview</li>
+        <li>Data disemination</li>
+        <li>Traffic Estimation</li>
+        <li>Routing strategies</li>
+        <li>Evaluation metrics</li>
+      </ul>
+    </li>
+    <li>Chapter 6. Evaluation of TrafficEQ
+      <ul>
+        <li>Introduction</li>
+        <li>Research questions</li>
+        <li>Simulation settings</li>
+        <li>Simulation results </li>
+        <li>Discussion and conclusions</li>
+      </ul>
+    </li>
+    <li>Chapter 7. Community detection
+      <ul>
+        <li>Introduction</li>
+        <li>Notations</li>
+        <li>Social networks</li>
+        <li>Dynamic networks</li>
+        <li>Community definition</li>
+        <li>Community detection algorithms</li>
+        <li>Algorithms applicable for VANETs</li>
+        <li>Community analysis</li>
+      </ul>
+    </li>
+    <li>Chapter 8. Crowds
+      <ul>
+        <li>Introduction</li>
+        <li>Overview</li>
+        <li>Community assignment</li>
+        <li>Evaluation metrics</li>
+        <li>Evaluation of Crowds</li>
+      </ul>
+    </li>
+     <li>Chapter 9. Conclusion and perspectives</li>
+     <p></p>
+     <p></p>
+  </ul>
+  <p></p>
+  <p></p>
+  <p></p>
+  <br/>
+  <br/>
+  <br/>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Current work</h2>
+    <h4>Crowds - mobility-based distributed community detection algorithm</h4>
+  </span>
+  <span class="content">
+   <ul>
+    <li>Label propagation community detection</li>
+    <li>Based on Leung's algorithm</li>
+    <li>Vehicle assigns to a community based on similarity
+      <ul>
+        <li>Topological metric (as in Leung's algorithm)</li>
+        <li>Mobility similarity</li>
+      </ul>
+    </li>
+    <li>Mobility metric</li>
+      <ul>
+        <li>DSD (Degree of Spatial Dependency)</li>
+        <li>sDSD (stable Degree of Spatial Dependency) </li>
+      </ul>
+    <li>Evaluation metrics
+      <ul>
+        <li>Stability index</li>
+      </ul>
+    </li>
+    <li>Comparison
+      <ul>
+        <li>Epidemic</li>
+        <li>Leung</li>
+        <li>Sand/SHARC</li>
+      </ul>
+    </li>
+    <li>Evaluation of Crowds</li>
+  </ul>
+    <br/>
+    <br/>
+    <br/>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Crowds - results </h2>
+    <h4><a href="http://vis.mushlab.com/single">vis.mushlab.com/single</a></h4>
+  </span>
+  <span class="content">
+    <iframe width="100%" height="900px" src="http://vis.mushlab.com/single"></iframe>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Crowds - comparison </h2>
+    <h4><a href="http://vis.mushlab.com/single">vis.mushlab.com/multiple</a></h4>
+  </span>
+  <span class="content">
+    <iframe width="100%" height="900px" src="http://vis.mushlab.com/multiple"></iframe>
+  </span>
+</div>
+
+
+<div class="slide">
+<span class="title">
+    <h2>Gantt chart</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+    <iframe width="100%" height="900px" src="https://docs.google.com/spreadsheet/pub?key=0Ati1E4SaygM-dGY0dlpla3UyTUdhLUFXdWdRQlgweVE&output=html"></iframe>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Plan for the third year</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+   <ul>
+      <li>Set plan, meetings and deadlines</li>
+      <li>Deliverables:
+        <ol>
+          <li>Journal article about TrafficEQ</li>
+          <li>Results from crowds algorithm</li>
+          <li>Paper about crowds algorithm</li>
+          <li>Collaboration paper with UC Berkeley</li>
+        </ol>
+      </li>
+      <li>Thesis:
+        <ul>
+          <li>Content</li>
+          <li>Submission deadline</li>
+          <li>Committe</li>
+          <li>Dissertation date</li>
+        </ul>
+      </li>
+   </ul>
+  </span>
+</div>
+
+<div class="slide">
+<span class="title">
+    <h2>Contacts</h2>
+    <h4></h4>
+  </span>
+  <span class="content">
+<ul>
+  <li>Professor Roberto Horowitz <a href="http://www.me.berkeley.edu/~horowitz/">http://www.me.berkeley.edu/~horowitz/</a></li>
+  <li>Professor Pravin Varaiya <a href="http://paleale.eecs.berkeley.edu/~varaiya/">http://paleale.eecs.berkeley.edu/~varaiya/</a></li>
+  <li>Alex Kurzhanskiy, Ph.D. <a href="http://www.eecs.berkeley.edu/~akurzhan/">http://www.eecs.berkeley.edu/~akurzhan/</a></li>
+  <li>Gabriel Gomes, Post Doctoral Researcher <a href="http://www.path.berkeley.edu/People/PATH_Staff/gomes_gabriel.htm">http://www.path.berkeley.edu/People/PATH_Staff/gomes_gabriel.htm</a></li>
+</ul>
+<!-- <ul>
+  <li>Lewis Lehe, PhD student at University of California, Berkeley</li>
+  <li></li>
+  </ul> -->
+</span>
+</div>
+
+
+
+
+<div class="slide">end</div>
